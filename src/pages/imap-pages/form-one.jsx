@@ -29,7 +29,7 @@ import {
   FormDescription,
 } from "@/components/ui/form"
 
-import { Loader2, UserSquare } from "lucide-react"
+import { Loader2, SmileIcon, UserSquare } from "lucide-react"
 
 const formSchema = z.object({
     studentFullName: z.string().min(5, {
@@ -54,10 +54,15 @@ const formSchema = z.object({
 
 function FormOneLanding() {
   const [isLoading, setLoading] = useState(false)
-
+  const [isEligible, setEligible] = useState(false)
+  // eslint-disable-next-line no-unused-vars
+  const [isEnrolled, setEnrolled] = useState(false)
+  const [data, setData] = useState("")
+  const [requestData, setRequestData] = useState("")
+  
   useEffect(() => {
     document.title = "Application - Form 1 Details | iMAP"
-  }, [])
+  }, [data, requestData])
 
   // 1. Define your form.
  const form = useForm({
@@ -71,7 +76,7 @@ function FormOneLanding() {
       examBoard: "ZIMSEC",
       studentType: "LOCAL",
       gender: "MALE",
-      appliedDate: new Date(),
+      appliedDate: new Date().toISOString(),
       yearAppliedFor: new Date().getFullYear(),
       schoolResponseStatus: "TRIAL"
      },
@@ -86,14 +91,51 @@ function FormOneLanding() {
     try {
       const url = `${baseUrl}/form_one_applications`; // Specify your API URL
       const response = await postDataQuery(url, updatedValues);
-      console.log('Response:', response);
+      setRequestData(updatedValues)
       setLoading(false)
+      // load new component after 3 seconds to allow customer to read toast message
+      if(response === 406){
+      setTimeout(() => {
+        setEligible(false)
+      }, 3000);
+      return
+    }
+    else{
+      setEligible(true)
+      setData(updatedValues) 
+      return
+    }
+
     } catch (error) {
+      if (error === 406) {
       setLoading(false)
+      setEligible(false)
       console.error('Error:', error);
-      // Handle the error appropriately
+      return
+      }
     }
   }   
+
+    // 3. Define a final submit handler for enrollment
+    async function onSubmitEnrollment() {
+      setLoading(true)
+  
+      try {
+        console.log(requestData)
+        const url = `${baseUrl}/form_one_applications/enrol`; // Specify your API URL
+        const response = await postDataQuery(url, requestData);
+        setLoading(false)
+        setEnrolled(true)
+        // load new component after 3 seconds to allow customer to read toast message
+  
+        console.log(response)
+      } catch (error) {
+        setLoading(false)
+        setEnrolled(false)
+        console.error('Error:', error);
+        // Handle the error appropriately
+      }
+    } 
 
   return (
     <div className="mt-10 items-center justify-center">
@@ -107,9 +149,9 @@ function FormOneLanding() {
           <div className="py-10 ml-10">
             <h1 className="text-[25px] text-left">Apply for a form 1 place</h1>
           </div>
+          {!isEligible ?          
           <div className='mx-10'>
             <h4 className='text-[25px]'>Grade 7 details</h4>
-
             <div className="py-10">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 md:w-full w-full p-5 md:p-0">
@@ -198,7 +240,7 @@ function FormOneLanding() {
                   </Select>
 
                   { !isLoading ?
-                  <Button type="submit">Proceed</Button>
+                  <Button type="submit">Check Eligibility</Button>
                   :
                   <Button disabled>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -208,8 +250,38 @@ function FormOneLanding() {
                 </form>
               </Form>
             </div>
-
         </div>
+          :
+          <div className="mx-10">
+            { !isEnrolled ? <>
+            <h1 className="flex gap-1">We hope you are excited to join this school? <SmileIcon /></h1>
+            <h1 className="">If so, please click Accept Offer or Reject Offer to complete your application</h1>
+          <div className="py-10 flex gap-4">
+          { !isLoading ?
+                  <Button onClick={()=> onSubmitEnrollment()}>I ACCEPT</Button>
+                  :
+                  <Button disabled>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Applying... 😁
+                  </Button>
+            }
+          </div>
+          <h1 className="">Only accepted students will be contacted.</h1>
+          </>  
+          : 
+          <div className="mx-10">
+            <h1 className="text-xl pb-5">Yipeeeee!</h1>
+            <p className="text-md pb-5">You have now officially been accepted and enrolled to School Name.</p>
+            <p className="text-md pb-5">You can proceed to contact the school administration on +263 (242) 789 100 or visit 
+            the school on the address 12 Mukoba Gweru if you are near by to pay an acceptance fee.
+            </p>
+            <p className="text-md">Here are the banking details of the school: TBA</p>
+            <img src="/img/celebrate.gif" />
+          </div>
+          }
+        </div>
+          
+        }
       </div>
     </div>
     </div>

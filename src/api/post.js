@@ -22,7 +22,7 @@ export const postDataQuery = async (url, data) => {
       } catch (error) {
         if (error.response && error.response.status === 406) {
           toast.warning("Sorry, but you do not seem to meet the desired criteria set by this school.");
-          return
+          return error.response.status
         } else {
           toast.error("Ooops, we ran into something. You could try checking your internet connection to help fix this.");
           console.error('Post request failed', error);
