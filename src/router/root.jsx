@@ -5,10 +5,10 @@ export default function Root() {
   const year = new Date().getFullYear()
     return (
       <>
-      <div className="sm:px-20 md:px-20 xl:px-20 px-2 flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen">
         <div className="flex-grow">
           <NavigationBar />
-          <div className="pt-10">
+          <div className="pt-10 md:px-20 px-2">
              <Outlet />
           </div>
         </div>

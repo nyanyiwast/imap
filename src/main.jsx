@@ -9,6 +9,7 @@ import Root from "./router/root";
 import ErrorPage from "./pages/error-page/error";
 import FormOneLanding from "./pages/imap-pages/form-one";
 import StudentsHome from "./pages/landing-page/StudentsHome";
+import { Toaster } from "sonner";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
+    <Toaster position="bottom-center" richColors/>
     <RouterProvider router={router} />
   </React.StrictMode>
 );
