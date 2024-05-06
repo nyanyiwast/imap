@@ -13,8 +13,11 @@ export default function Root() {
           </div>
         </div>
         <div id="footer" className="flex-shrink-0 py-4 text-center text-[14px]">
-          <p>
-            Developed with ❤️ by <span className="text-blue-600">Sedrick_Tha_Dev</span> © {year}
+          <p className="text-[12px]">
+            Developed with ❤️ by 
+            <span className="text-blue-600 cursor-pointer" title="Visit my official X handle?">
+            {" "}  Sedrick_Tha_Dev
+            </span> © {year} for MOPSE
           </p>
         </div>
       </div>

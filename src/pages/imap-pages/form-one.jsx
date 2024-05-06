@@ -8,8 +8,8 @@ import {
 } from "@/components/ui/select"
 import { Button } from '@/components/ui/button';
 import { useEffect } from 'react';
+import QuickMenu from '../../components/custom/QuickMenu';
 
-  
 function FormOneLanding() {
   useEffect(() => {
     document.title = "Application - Form 1 Details | iMAP"
@@ -18,17 +18,13 @@ function FormOneLanding() {
     <div className="mt-10 items-center justify-center">
       <div className="flex gap-8">
       <div className="py-12 mr-10 hidden md:inline">
-          <div className="flex flex-col gap-8">
-            <label className='text-[15px] text-slate-600 font-light'>Quick access</label>
-            <label className="cursor-pointer text-[20px]">Form One</label>
-            <label className="cursor-pointer text-[20px]">Form Five</label>
-            <label className="cursor-pointer text-[20px]">University</label>
-            <label className="cursor-pointer text-[20px]">Internship</label>
+          <div className="flex flex-col gap-y-4">
+            <QuickMenu />
           </div>
         </div>
         <div className='w-[600px] overflow-y-auto'>
           <div className="py-10 ml-10">
-            <h1 className="text-[30px] text-left">Details</h1>
+            <h1 className="text-[25px] text-left">Apply for a form 1 place</h1>
           </div>
           <div className='mx-10'>
             <h4 className='text-[25px]'>Grade 7 details</h4>
