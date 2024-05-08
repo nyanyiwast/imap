@@ -14,7 +14,7 @@ function NavigationBar() {
              className="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer">
             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">iMAP</span>
             </p>
-            <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+            <div className="flex md:order-2 space-x-3 md:space-x-5 rtl:space-x-reverse">
             <Button onClick={()=>navigateTo("/form-one")}>
                 Get started
             </Button>

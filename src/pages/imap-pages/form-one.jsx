@@ -76,8 +76,6 @@ function FormOneLanding() {
       examBoard: "ZIMSEC",
       studentType: "LOCAL",
       gender: "MALE",
-      appliedDate: new Date().toISOString(),
-      yearAppliedFor: new Date().getFullYear(),
       schoolResponseStatus: "TRIAL"
      },
    })
@@ -85,8 +83,8 @@ function FormOneLanding() {
   // 2. Define a submit handler.
   async function onSubmit(values) {
     setLoading(true)
-    const { schoolId, examBoard, studentType, gender, appliedDate, yearAppliedFor, schoolResponseStatus } = form.getValues(); // Access the provinceId value
-    const updatedValues = { ...values, schoolId, examBoard, studentType, gender, appliedDate, yearAppliedFor, schoolResponseStatus }; // Include provinceId in the values object
+    const { schoolId, examBoard, studentType, gender, schoolResponseStatus } = form.getValues(); // Access the provinceId value
+    const updatedValues = { ...values, schoolId, examBoard, studentType, gender, schoolResponseStatus }; // Include provinceId in the values object
 
     try {
       const url = `${baseUrl}/form_one_applications`; // Specify your API URL
@@ -95,14 +93,14 @@ function FormOneLanding() {
       setLoading(false)
       // load new component after 3 seconds to allow customer to read toast message
       if(response === 406){
-      setTimeout(() => {
         setEligible(false)
-      }, 3000);
       return
     }
     else{
-      setEligible(true)
-      setData(updatedValues) 
+      setTimeout(() => {
+        setEligible(true)
+        setData(updatedValues) 
+      }, 3000);
       return
     }
 
@@ -113,6 +111,8 @@ function FormOneLanding() {
       console.error('Error:', error);
       return
       }
+      setLoading(false)
+      setEligible(false)
     }
   }   
 
@@ -145,7 +145,7 @@ function FormOneLanding() {
             <QuickMenu />
           </div>
         </div>
-        <div className='w-[600px] overflow-y-auto'>
+        <div className='w-1/2 overflow-y-auto'>
           <div className="py-10 ml-10">
             <h1 className="text-[25px] text-left">Apply for a form 1 place</h1>
           </div>

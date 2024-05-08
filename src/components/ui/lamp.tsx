@@ -2,8 +2,12 @@
 import React from 'react'
 import { motion } from "framer-motion";
 import { cn } from "@/utils/cn";
+import { Button } from './button';
+import { useNavigate } from 'react-router-dom';
 
 export function LampDemo() {
+  const navigateTo = useNavigate()
+
   return (
     <LampContainer>
       <motion.h1
@@ -16,7 +20,7 @@ export function LampDemo() {
         }}
         className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-md font-medium tracking-tight text-transparent md:text-3xl"
       >
-        Goodbye Physical Applications, <span className="font-bold">{" 👋🏽 "} Hello iMAP </span>
+        Goodbye Waiting Periods, <span className="font-bold">{" 👋🏽 "} Hello iMAP </span>
       </motion.h1>
       <motion.h1
         initial={{ opacity: 0.5, y: 100 }}
@@ -29,6 +33,26 @@ export function LampDemo() {
         className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
       >
         improved Ministry Application Platform.
+      </motion.h1>
+      <motion.h1
+        initial={{ opacity: 0.5, y: 100 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{
+          delay: 0.3,
+          duration: 0.8,
+          ease: "easeInOut",
+        }}
+        className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center font-medium tracking-tight text-transparent"
+      >
+        What do you intend to apply for?
+        <div className="flex justify-center items-center space-x-4 pt-10 px-5">
+          <Button onClick={()=>navigateTo("/form-one")}>Form 1</Button>
+          <Button>Form 5</Button>
+        </div> 
+        <div className="flex justify-center items-center space-x-4 pt-10">
+          <Button variant="secondary">University <span className="text-xs"> (Undergrad)</span></Button>
+          <Button variant="secondary">Internship <span className="text-xs"> (TBA)</span></Button>
+        </div>
       </motion.h1>
     </LampContainer>
   );
