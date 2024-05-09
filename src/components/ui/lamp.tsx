@@ -9,6 +9,7 @@ export function LampDemo() {
   const navigateTo = useNavigate()
 
   return (
+    <div className='md:py-10 py-5'>
     <LampContainer>
       <motion.h1
         initial={{ opacity: 0.5, y: 100 }}
@@ -18,7 +19,7 @@ export function LampDemo() {
           duration: 0.8,
           ease: "easeInOut",
         }}
-        className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-md font-medium tracking-tight text-transparent md:text-3xl"
+        className="mt-8 bg-gradient-to-br from-slate-300 to-white py-5 bg-clip-text text-center text-md font-medium tracking-tight text-transparent md:text-3xl"
       >
         Goodbye Waiting Periods, <span className="font-bold">{" 👋🏽 "} Hello iMAP </span>
       </motion.h1>
@@ -30,7 +31,7 @@ export function LampDemo() {
           duration: 0.8,
           ease: "easeInOut",
         }}
-        className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
+        className="mt-8 bg-gradient-to-br from-slate-300 to-white py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
       >
         improved Ministry Application Platform.
       </motion.h1>
@@ -42,7 +43,7 @@ export function LampDemo() {
           duration: 0.8,
           ease: "easeInOut",
         }}
-        className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center font-medium tracking-tight text-transparent"
+        className="mt-8 bg-gradient-to-br from-slate-300 to-white py-4 bg-clip-text text-center font-medium tracking-tight text-transparent"
       >
         What do you intend to apply for?
         <div className="flex justify-center items-center space-x-4 pt-10 px-5">
@@ -55,6 +56,7 @@ export function LampDemo() {
         </div>
       </motion.h1>
     </LampContainer>
+    </div>
   );
 }
 
