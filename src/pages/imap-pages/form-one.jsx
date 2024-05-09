@@ -145,7 +145,7 @@ function FormOneLanding() {
             <QuickMenu />
           </div>
         </div>
-        <div className='w-1/2 overflow-y-auto'>
+        <div className='md:w-1/2 overflow-y-auto'>
           <div className="py-10 ml-10">
             <h1 className="text-[25px] text-left">Apply for a form 1 place</h1>
           </div>
