@@ -11,6 +11,7 @@ import FormOneLanding from "./pages/imap-pages/form-one";
 import StudentsHome from "./pages/landing-page/StudentsHome";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme-provider"
+import ComingSoonPage from "./pages/error-page/coming-soon";
 // import { ThemeProvider } from './components/theme-provider';
 
 const router = createBrowserRouter([
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "form-one",
         element: <FormOneLanding />,
+      },
+      {
+        path: "/coming-soon",
+        element: <ComingSoonPage />
       },
     ],
   },

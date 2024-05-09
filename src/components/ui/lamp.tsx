@@ -48,11 +48,11 @@ export function LampDemo() {
         What do you intend to apply for?
         <div className="flex justify-center items-center space-x-4 pt-10 px-5">
           <Button onClick={()=>navigateTo("/form-one")}>Form 1</Button>
-          <Button>Form 5</Button>
+          <Button onClick={()=> navigateTo("/coming-soon")}>Form 5</Button>
         </div> 
         <div className="flex justify-center items-center space-x-4 pt-10">
-          <Button variant="secondary">University <span className="text-xs"> (Undergrad)</span></Button>
-          <Button variant="secondary">Internship <span className="text-xs"> (TBA)</span></Button>
+          <Button onClick={()=> navigateTo("/coming-soon")} variant="secondary">University <span className="text-xs"> (Undergrad)</span></Button>
+          <Button onClick={()=> navigateTo("/coming-soon")} variant="secondary">Internship <span className="text-xs"> (TBA)</span></Button>
         </div>
       </motion.h1>
     </LampContainer>
