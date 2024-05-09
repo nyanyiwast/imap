@@ -36,11 +36,15 @@ const formSchema = z.object({
     message: "Student name field is mandatory and must be valid",
   }),
     candidateNumber: z.string().min(4, {
-    message: "Candidate number field is mandatory and must be valid",
-  }),
-    centerNumber: z.string().min(5, {
-    message: "Center number field is mandatory and must be valid",
-  }),
+      message: "Candidate number field must be 4 characters long",
+    }).max(4, {
+      message: "Candidate number field must be 4 characters long",
+    }),
+    centerNumber: z.string().min(6, {
+      message: "Candidate number field must be 6 characters long",
+    }).max(6, {
+      message: "Candidate number field must be 6 characters long",
+    }),
   grade7Units: z
   .string()
   .refine(value => {
