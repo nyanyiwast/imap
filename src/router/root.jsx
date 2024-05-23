@@ -4,7 +4,6 @@ import NavigationBar from "../components/custom/NavigationBar"
 export default function Root() {
   const year = new Date().getFullYear()
     return (
-      <>
       <div className="flex flex-col min-h-screen">
         <div className="flex-grow">
           <NavigationBar />
@@ -21,6 +20,5 @@ export default function Root() {
           </p>
         </div>
       </div>
-      </>
     )
   }

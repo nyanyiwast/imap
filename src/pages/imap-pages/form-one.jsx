@@ -29,7 +29,8 @@ import {
   FormDescription,
 } from "@/components/ui/form"
 
-import { Loader2, SmileIcon, UserSquare } from "lucide-react"
+
+import { Loader2, SmileIcon, UserSquare, UsersRoundIcon } from "lucide-react"
 
 const formSchema = z.object({
     studentFullName: z.string().min(5, {
@@ -45,7 +46,7 @@ const formSchema = z.object({
     }).max(6, {
       message: "Candidate number field must be 6 characters long",
     }),
-  grade7Units: z
+  units: z
   .string()
   .refine(value => {
     const intValue = parseInt(value);
@@ -63,10 +64,13 @@ function FormOneLanding() {
   const [isEnrolled, setEnrolled] = useState(false)
   const [data, setData] = useState("")
   const [requestData, setRequestData] = useState("")
+  const [gender, setGender] = useState('FEMALE')
+  const [pageTitle, setPageTitle] = useState("Apply for a form 1 place")
   
   useEffect(() => {
     document.title = "Application - Form 1 Details | iMAP"
-  }, [data, requestData])
+  }, [data, requestData, gender, pageTitle])
+  
 
   // 1. Define your form.
  const form = useForm({
@@ -76,37 +80,34 @@ function FormOneLanding() {
       candidateNumber: "",
       centerNumber: "",
       schoolId: 1,
-      grade7Units: "",
-      examBoard: "ZIMSEC",
-      studentType: "LOCAL",
-      gender: "MALE",
-      schoolResponseStatus: "TRIAL"
+      units: "",
+      gender,
      },
    })
 
   // 2. Define a submit handler.
   async function onSubmit(values) {
     setLoading(true)
-    const { schoolId, examBoard, studentType, gender, schoolResponseStatus } = form.getValues(); // Access the provinceId value
-    const updatedValues = { ...values, schoolId, examBoard, studentType, gender, schoolResponseStatus }; // Include provinceId in the values object
+    const { schoolId, gender } = form.getValues(); // Access the provinceId value
+    const updatedValues = { ...values, schoolId, gender }; // Include provinceId in the values object
 
     try {
-      const url = `${baseUrl}/form_one_applications`; // Specify your API URL
+      const url = `${baseUrl}/form-one-applications`; // Specify your API URL
       const response = await postDataQuery(url, updatedValues);
       setRequestData(updatedValues)
       setLoading(false)
       // load new component after 3 seconds to allow customer to read toast message
       if(response === 406){
         setEligible(false)
-      return
     }
     else{
       setTimeout(() => {
         setEligible(true)
+        setPageTitle("You passed the eligibility test!!!")
         setData(updatedValues) 
       }, 3000);
-      return
     }
+      return
 
     } catch (error) {
       if (error === 406) {
@@ -123,12 +124,12 @@ function FormOneLanding() {
     // 3. Define a final submit handler for enrollment
     async function onSubmitEnrollment() {
       setLoading(true)
-  
+
       try {
-        console.log(requestData)
-        const url = `${baseUrl}/form_one_applications/enrol`; // Specify your API URL
+        const url = `${baseUrl}/form-one-applications/enrol`; // Specify your API URL
         const response = await postDataQuery(url, requestData);
         setLoading(false)
+        setPageTitle('CONGRATULATIONS!')
         setEnrolled(true)
         // load new component after 3 seconds to allow customer to read toast message
   
@@ -150,13 +151,13 @@ function FormOneLanding() {
           </div>
         </div>
         <div className='md:w-1/2 overflow-y-auto'>
-          <div className="py-10 ml-10">
-            <h1 className="text-[25px] text-left">Apply for a form 1 place</h1>
+          <div className="pt-10 ml-10">
+            <h1 className="text-[25px] text-left">{pageTitle}</h1>
           </div>
           {!isEligible ?          
           <div className='mx-10'>
-            <h4 className='text-[25px]'>Grade 7 details</h4>
-            <div className="py-10">
+            {/* <h4 className='text-[25px]'>Grade 7 details</h4> */}
+            <div className="py-5">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 md:w-full w-full p-5 md:p-0">
                   <FormField
@@ -164,11 +165,11 @@ function FormOneLanding() {
                     name="studentFullName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Student Full Name</FormLabel>
+                        <FormLabel>Your Full Name</FormLabel>
                         <FormControl>
                           <Input className="uppercase" placeholder="John Doe" {...field} />
                         </FormControl>
-                        <FormDescription className="flex gap-1">Please enter your full name as it is on your National ID <UserSquare /></FormDescription>
+                        <FormDescription className="flex gap-1">Please enter your full name as it is shown on your ZIMSEC Statement Of Entry <UserSquare /></FormDescription>
                         <FormMessage />
                       </FormItem>
                       
@@ -191,14 +192,14 @@ function FormOneLanding() {
                     )}
                   />
 
-                  <FormField
+                <FormField
                     control={form.control}
                     name="centerNumber"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Center Number</FormLabel>
                         <FormControl>
-                          <Input placeholder="1267722" {...field} />
+                          <Input placeholder="126772" {...field} />
                         </FormControl>
                         <FormDescription>Get this number from your statement of entry form</FormDescription>
                         <FormMessage />
@@ -207,9 +208,10 @@ function FormOneLanding() {
                     )}
                   />
 
+
                   <FormField
                     control={form.control}
-                    name="grade7Units"
+                    name="units"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Grade 7 Units</FormLabel>
@@ -223,28 +225,28 @@ function FormOneLanding() {
                     )}
                   />
 
-                  <Select>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Choose your examination board" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="ZIMSEC">ZIMSEC</SelectItem>
-                      <SelectItem value="CAMBRIDGE">CAMBRIDGE</SelectItem>
-                    </SelectContent>
-                  </Select>
-
-                  <Select>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Choose appropriate answer" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="LOCAL">I AM A LOCAL STUDENT</SelectItem>
-                      <SelectItem value="INTERNATIONAL">I AM AN INTERNATIONAL STUDENT</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <div className="py-10">
+                    <div className="flex gap-10 pb-5">
+                      <UsersRoundIcon size={60}/>
+                      <h1 className="text-lg">Select Appropriate Choice</h1>                    
+                    </div>
+                  <div className="md:w-1/2 w-full">
+                    <Select
+                    onValueChange={(value)=> setGender(value)}
+                    >
+                      <SelectTrigger className="w-full text-black">
+                        <SelectValue placeholder="Choose an appropriate choice" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="MALE">MALE</SelectItem>
+                        <SelectItem value="FEMALE">FEMALE</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  </div>
 
                   { !isLoading ?
-                  <Button type="submit">Check Eligibility</Button>
+                  <Button className="md:w-1/2 w-full" type="submit">Check Eligibility</Button>
                   :
                   <Button disabled>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -262,7 +264,10 @@ function FormOneLanding() {
             <h1 className="">If so, please click Accept Offer or Reject Offer to complete your application</h1>
           <div className="py-10 flex gap-4">
           { !isLoading ?
-                  <Button onClick={()=> onSubmitEnrollment()}>I ACCEPT</Button>
+                  <div className="flex gap-5">
+                    <Button onClick={()=> onSubmitEnrollment()}>I ACCEPT</Button>
+                    <Button onClick={()=> setEligible(false)}>I DECLINE</Button>
+                  </div>
                   :
                   <Button disabled>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
